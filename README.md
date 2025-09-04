@@ -1,7 +1,9 @@
 # Junuior_DE_test
 Проект для сбора и анализа данных  с использованием ClickHouse и Docker.
-репозиторий/
-├── Dockerfile                 # Основной файл для сборки образа
+репозиторий
+
+
+├── Dockerfile                # Основной файл для сборки образа
 ├── README.md                 # Этот файл
 ├── init.sql                  # SQL-скрипт для создания схемы БД (таблицы, представления)
 ├── load_to_clickhouse.py     # Python-скрипт для загрузки данных
@@ -31,13 +33,17 @@
  Структура и описание файлов
 
  1. Dockerfile
+    
     1.1. Сборка образа docker build -t clickhouse-python .
     1.2. Запуск контейнера docker run -it -p 9001:9000 clickhouse-python
     1.3. Описание файла
 
     1.3.1. Базовый образ
+    
             FROM clickhouse:25.7
+    
     1.3.2. Установка зависимостей
+    
           RUN apt-get update && \
               apt-get install -y python3 python3-pip curl && \
               apt-get clean && \
@@ -66,6 +72,7 @@
           RUN chmod +x /docker-entrypoint-initdb.d/*.py
 
             Делает Python-скрипт исполняемым, что необходимо для его автоматического запуска.
+    
     1.3.5. Копирование конфигурационных файлов
 
           COPY config.xml /etc/clickhouse-server/config.d/
@@ -82,3 +89,26 @@
     1.3.7. Запуск скрипта 
 
             CMD ["python3", "/docker-entrypoint-initdb.d/load_to_clickhouse.py"]
+
+2. Файл init.sql
+
+  Таблицы и представления
+
+    2.1. raw_table - таблица для хранения сырых данных в формате JSON
+
+        data (String) - сырые JSON-данные
+
+        _inserted_at (DateTime) - метка времени добавления записи
+
+    2.2. parsed_table - таблица для хранения структурированных данных
+
+        craft (String) - название космического корабля
+
+        name (String) - имя астронавта
+
+        _inserted_at (DateTime) - метка времени добавления записи
+
+    2.3. parsed_mv - материализованное представление для автоматического преобразования данных из raw_table в parsed_table
+
+
+<img width="1561" height="1260" alt="image" src="https://github.com/user-attachments/assets/5910fd03-e506-41c0-9557-ae87b25c0725" />
