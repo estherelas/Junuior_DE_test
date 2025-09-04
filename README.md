@@ -33,7 +33,9 @@
  1. Dockerfile
     
     1.1. Сборка образа docker build -t clickhouse-python .
+
     1.2. Запуск контейнера docker run -it -p 9001:9000 clickhouse-python
+    
     1.3. Описание файла
 
     1.3.1. Базовый образ
@@ -88,7 +90,7 @@
 
             CMD ["python3", "/docker-entrypoint-initdb.d/load_to_clickhouse.py"]
 
-2. Файл init.sql
+3. Файл init.sql
 
   Таблицы и представления
 
